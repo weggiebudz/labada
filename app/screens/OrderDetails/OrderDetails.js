@@ -31,7 +31,7 @@ function OrderDetails({route, navigation}) {
                         <Text style={{marginHorizontal: 5, fontWeight: 'bold', fontSize: 17}}>{item.statusDesc}</Text>
                     </View>
                     <View>
-                        <Text>Amount : {item.amount}</Text>
+                        <Text style={styles.label}>Amount : {item.amount}</Text>
                     </View>
                 </View>
             </View>
@@ -55,6 +55,9 @@ const styles = StyleSheet.create({
         height: 22,
         width: 22,
         marginHorizontal: 5
+    },
+    label: {
+
     }
 })
 
