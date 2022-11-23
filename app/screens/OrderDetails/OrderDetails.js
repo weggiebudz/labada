@@ -30,6 +30,9 @@ function OrderDetails({route, navigation}) {
                         <Image style={styles.statusIcon} source={statusIndex}/>
                         <Text style={{marginHorizontal: 5, fontWeight: 'bold', fontSize: 17}}>{item.statusDesc}</Text>
                     </View>
+                    <View>
+                        <Text>Amount : {item.amount}</Text>
+                    </View>
                 </View>
             </View>
         </SafeAreaView>
