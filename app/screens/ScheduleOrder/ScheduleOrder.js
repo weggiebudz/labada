@@ -90,12 +90,35 @@ function ScheduleOrder({navigation}) {
         },
     ]
 
-    const onOpen = (name) => {
+    const onOpen = async (name) => {
         if(name=='bt_Save'){
-            console.log(date);
-            navigation.dispatch(
-                StackActions.popToTop()
-            );
+            //console.log(date);
+            try{
+                const response = await fetch('http://192.168.101.5:4000/api/chirps', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        Customer_ID: 1,
+                        Order_Date: '2022-11-28',
+                        Pickup_Date: null,
+                        Deliver_Date: null,
+                        Amount: 0,
+                        Weight: 0,
+                        Status: 1
+                    })
+                });
+                const json = await response.json();
+                console.log(json);
+            } catch(error) {
+                console.log(error);
+            } finally {
+                navigation.dispatch(
+                    StackActions.popToTop()
+                );
+            }
         }
     }
 

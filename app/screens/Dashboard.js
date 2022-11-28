@@ -135,7 +135,7 @@ function Dashboard({navigation}) {
         }
     ]
 
-    const onScheduleOrder = () => {
+    const onScheduleOrder = async () => {
         navigation.navigate('ScheduleOrder');
     }
 
