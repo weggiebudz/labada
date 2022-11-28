@@ -12,12 +12,70 @@ function Dashboard({navigation}) {
     const orders = [
         {
             id: 1,
-            amount: 2000.015,
+            amount: 0,
             pickup: '2022-11-15',
             deliver: '',
-            kilo: 8,
+            kilo: 0,
             status: 1,
-            statusDesc: 'For Pickup'
+            statusDesc: 'For Pickup',
+            items: [
+                {
+                    itemdesc: 'Jacket',
+                    qty: 1
+                },
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                },
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                }
+                ,
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                }
+                ,
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                }
+                ,
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                }
+                ,
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                }
+                ,
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                }
+                ,
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                }
+                ,
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                }
+                ,
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                },
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                }
+            ]
         },
         {
             id: 2,
@@ -26,7 +84,17 @@ function Dashboard({navigation}) {
             deliver: '',
             kilo: 8,
             status: 2,
-            statusDesc: 'In Progress...'
+            statusDesc: 'In Progress...',
+            items: [
+                {
+                    itemdesc: 'Jacket',
+                    qty: 1
+                },
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                }
+            ]
         },
         {
             id: 3,
@@ -35,7 +103,17 @@ function Dashboard({navigation}) {
             deliver: '',
             kilo: 8,
             status: 3,
-            statusDesc: 'For Delivery'
+            statusDesc: 'For Delivery',
+            items: [
+                {
+                    itemdesc: 'Jacket',
+                    qty: 1
+                },
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                }
+            ]
         },{
             id: 4,
             amount: 1500.00,
@@ -43,7 +121,17 @@ function Dashboard({navigation}) {
             deliver: '2022-11-15',
             kilo: 10,
             status: 4,
-            statusDesc: 'Delivered'
+            statusDesc: 'Delivered',
+            items: [
+                {
+                    itemdesc: 'Jacket',
+                    qty: 1
+                },
+                {
+                    itemdesc: 'tshirt',
+                    qty: 5
+                }
+            ]
         }
     ]
 

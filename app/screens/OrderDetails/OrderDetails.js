@@ -1,5 +1,6 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Image } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, Image, FlatList, RefreshControl } from 'react-native';
+import OrderDetailsCard from '../../components/OrderDetailsCard';
 
 function OrderDetails({route, navigation}) {
     const item = route.params.item;
@@ -25,13 +26,31 @@ function OrderDetails({route, navigation}) {
         <SafeAreaView>
             <View style={{height: '100%', padding: 20}}>
                 <View style={styles.detailsContainer}>
-                    <Text style={styles.detailHeader}>{'Order #' + item.id + ' (' + item.kilo + ' kilo/s)'}</Text>
+                    <Text style={styles.detailHeader}>{'Order #' + item.id}</Text>
                     <View style={{flexDirection: 'row', alignItems: 'center', alignSelf:'center'}}>
                         <Image style={styles.statusIcon} source={statusIndex}/>
                         <Text style={{marginHorizontal: 5, fontWeight: 'bold', fontSize: 17}}>{item.statusDesc}</Text>
                     </View>
-                    <View>
-                        <Text style={styles.label}>Amount : {item.amount}</Text>
+                    <FlatList style={{width: '100%', padding: 10}} data={item.items} refreshControl={<RefreshControl refreshing={false} onRefresh={() => {}}/>} renderItem={({item}) => 
+                        <OrderDetailsCard description={item.itemdesc} qty={item.qty}/>
+                    }/>
+                    <View style={{padding: 15}}>
+                    <View style={styles.labelContainer}>
+                        <Text style={[styles.label, {flex: 1}]}>Pick up: </Text>
+                        <Text style={styles.label}>{item.pickup}</Text>
+                    </View>
+                    <View style={styles.labelContainer}>
+                        <Text style={[styles.label, {flex: 1}]}>Deliver: </Text>
+                        <Text style={styles.label}>{item.deliver}</Text>
+                    </View>
+                    <View style={styles.labelContainer}>
+                        <Text style={[styles.label, {flex: 1}]}>Weight: </Text>
+                        <Text style={styles.label}>{item.kilo} kilo/s</Text>
+                    </View>
+                    <View style={styles.labelContainer}>
+                        <Text style={[styles.label, {flex: 1}]}>Amount: </Text>
+                        <Text style={[styles.label, {color: 'green'}]}>₱ {item.amount.toLocaleString(undefined, {maximumFractionDigits:2})}</Text>
+                    </View>
                     </View>
                 </View>
             </View>
@@ -57,7 +76,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 5
     },
     label: {
-
+        fontSize: 20,
+        fontWeight: 'bold'
+    },
+    labelContainer: {
+        flexDirection: 'row',
+        margin: 5
     }
 })
 
