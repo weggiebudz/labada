@@ -9,9 +9,11 @@ import { StackActions } from '@react-navigation/native';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { ROUTES } from '../../../Network';
 
 function ScheduleOrder({navigation}) {
-    const [date, setDate] = useState(formatAMPM(new Date()));
+    const [time, setDate] = useState(formatAMPM(new Date()));
+    const [date, setPickDate] = useState(new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" +  new Date().getDate());
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -40,7 +42,7 @@ function ScheduleOrder({navigation}) {
       }
 
     const onDateChange = (item) => {
-        console.log(item);
+        setPickDate(new Date(item).getFullYear() + "-" + (new Date(item).getMonth() + 1) + "-" +  new Date(item).getDate());
     }
 
     const services = [
@@ -92,9 +94,8 @@ function ScheduleOrder({navigation}) {
 
     const onOpen = async (name) => {
         if(name=='bt_Save'){
-            //console.log(date);
             try{
-                const response = await fetch('http://192.168.101.5:4000/api/chirps', {
+                const response = await fetch(ROUTES.URL + '/booking', {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -102,8 +103,8 @@ function ScheduleOrder({navigation}) {
                     },
                     body: JSON.stringify({
                         Customer_ID: 1,
-                        Order_Date: '2022-11-28',
-                        Pickup_Date: null,
+                        Pickup_Date: date,
+                        Time: time,
                         Deliver_Date: null,
                         Amount: 0,
                         Weight: 0,
@@ -129,7 +130,7 @@ function ScheduleOrder({navigation}) {
                 <View style={{margin: 15, flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.time}>Pick Up Time : </Text>
                     <TouchableOpacity onPress={showDatePicker} style={[styles.time, { padding: 7, borderRadius: 7, borderWidth: 1}]}>
-                        <Text style={styles.time}>{date}</Text>
+                        <Text style={styles.time}>{time}</Text>
                     </TouchableOpacity>
                     <DateTimePickerModal
                         isDarkModeEnabled={true}

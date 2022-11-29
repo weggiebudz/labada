@@ -6,8 +6,33 @@ import { COLORS, SAFEAREAVIEW } from '../themes/Colors'
 import OrderCard from '../components/OrderCard';
 import FullButton from '../components/FullButton';
 import { StackActions } from '@react-navigation/native';
+import { ROUTES } from '../../Network';
+import { useEffect } from 'react';
 
 function Dashboard({navigation}) {
+
+    useEffect(() => {
+        loadOrderHistory();
+    }, [])
+
+    const loadOrderHistory = async () => {
+        try{
+            const response = await fetch(ROUTES.URL + '/getOrderHistory', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    customerid: 1
+                })
+            });
+            const json = await response.json();
+            console.log(json);
+        } catch(error) {
+            console.log(error);
+        }
+    };
 
     const orders = [
         {
