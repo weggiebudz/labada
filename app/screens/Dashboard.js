@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, Text, View, Image, StyleSheet, FlatList, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
 import SearchInput from '../components/SearchInput';
 import ImageButton from '../components/ImageButton';
@@ -10,10 +10,11 @@ import { ROUTES } from '../../Network';
 import { useEffect } from 'react';
 
 function Dashboard({navigation}) {
+    const [orders, setOrders] = useState([]);
 
     useEffect(() => {
         loadOrderHistory();
-    }, [])
+    }, []);
 
     const loadOrderHistory = async () => {
         try{
@@ -28,137 +29,11 @@ function Dashboard({navigation}) {
                 })
             });
             const json = await response.json();
-            console.log(json);
+            setOrders(json);
         } catch(error) {
             console.log(error);
         }
     };
-
-    const orders = [
-        {
-            id: 1,
-            amount: 0,
-            pickup: '2022-11-15',
-            deliver: '',
-            kilo: 0,
-            status: 1,
-            statusDesc: 'For Pickup',
-            items: [
-                {
-                    itemdesc: 'Jacket',
-                    qty: 1
-                },
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                },
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                }
-                ,
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                }
-                ,
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                }
-                ,
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                }
-                ,
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                }
-                ,
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                }
-                ,
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                }
-                ,
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                }
-                ,
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                },
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                }
-            ]
-        },
-        {
-            id: 2,
-            amount: 200,
-            pickup: '2022-11-13',
-            deliver: '',
-            kilo: 8,
-            status: 2,
-            statusDesc: 'In Progress...',
-            items: [
-                {
-                    itemdesc: 'Jacket',
-                    qty: 1
-                },
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                }
-            ]
-        },
-        {
-            id: 3,
-            amount: 198.50,
-            pickup: '2022-11-13',
-            deliver: '',
-            kilo: 8,
-            status: 3,
-            statusDesc: 'For Delivery',
-            items: [
-                {
-                    itemdesc: 'Jacket',
-                    qty: 1
-                },
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                }
-            ]
-        },{
-            id: 4,
-            amount: 1500.00,
-            pickup: '2022-11-10',
-            deliver: '2022-11-15',
-            kilo: 10,
-            status: 4,
-            statusDesc: 'Delivered',
-            items: [
-                {
-                    itemdesc: 'Jacket',
-                    qty: 1
-                },
-                {
-                    itemdesc: 'tshirt',
-                    qty: 5
-                }
-            ]
-        }
-    ]
 
     const onScheduleOrder = async () => {
         navigation.navigate('ScheduleOrder');

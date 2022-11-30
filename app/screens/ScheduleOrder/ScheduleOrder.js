@@ -13,7 +13,7 @@ import { ROUTES } from '../../../Network';
 
 function ScheduleOrder({navigation}) {
     const [time, setDate] = useState(formatAMPM(new Date()));
-    const [date, setPickDate] = useState(new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" +  new Date().getDate());
+    const [date, setPickDate] = useState(new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" +  (new Date().getDate() + 1));
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -126,7 +126,13 @@ function ScheduleOrder({navigation}) {
     return (
         <View style={{height: '100%'}}>
             <SafeAreaView style={{alignItems: 'center', margin: 10}}>
-                <CalendarPicker nextTitleStyle={{fontWeight: 'bold', color: COLORS.PRIMARY}} previousTitleStyle={{fontWeight: 'bold', color: COLORS.PRIMARY}} todayBackgroundColor='#16A085' selectedDayColor={COLORS.PRIMARY} selectedDayTextColor={COLORS.SECONDARY} minDate={Date.now()} onDateChange={onDateChange}/>
+                <CalendarPicker nextTitleStyle={{fontWeight: 'bold', color: COLORS.PRIMARY}} 
+                previousTitleStyle={{fontWeight: 'bold', color: COLORS.PRIMARY}} 
+                selectedDayColor={COLORS.PRIMARY} 
+                selectedDayTextColor={COLORS.SECONDARY} 
+                //selectedStartDate ={new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate() + 1)}
+                minDate={new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate() + 1)} 
+                onDateChange={onDateChange}/>
                 <View style={{margin: 15, flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.time}>Pick Up Time : </Text>
                     <TouchableOpacity onPress={showDatePicker} style={[styles.time, { padding: 7, borderRadius: 7, borderWidth: 1}]}>
