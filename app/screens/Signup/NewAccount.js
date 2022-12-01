@@ -11,7 +11,7 @@ function NewAccount({navigation}) {
     const [lastname, setLastName] = useState();
     const [address, setAddress] = useState();
     const [email, setEmail] = useState();
-    const [phonenumber, setPhoneNumber] = useState();
+    const [phonenumber, setPhoneNumber] = useState(); //sample commit
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: COLORS.SECONDARY}}>
