@@ -13,7 +13,7 @@ import { ROUTES } from '../../../Network';
 
 function ScheduleOrder({navigation}) {
     const [time, setDate] = useState(formatAMPM(new Date()));
-    const [date, setPickDate] = useState(new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" +  (new Date().getDate() + 1));
+    const [date, setPickDate] = useState();
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -94,31 +94,35 @@ function ScheduleOrder({navigation}) {
 
     const onOpen = async (name) => {
         if(name=='bt_Save'){
-            try{
-                const response = await fetch(ROUTES.URL + '/booking', {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        Customer_ID: 1,
-                        Pickup_Date: date,
-                        Time: time,
-                        Deliver_Date: null,
-                        Amount: 0,
-                        Weight: 0,
-                        Status: 1
-                    })
-                });
-                const json = await response.json();
-                console.log(json);
-            } catch(error) {
-                console.log(error);
-            } finally {
-                navigation.dispatch(
-                    StackActions.popToTop()
-                );
+            if(date != null && time != null){
+                try{
+                    const response = await fetch(ROUTES.URL + '/booking', {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            Customer_ID: 1,
+                            Pickup_Date: date,
+                            Time: time,
+                            Deliver_Date: null,
+                            Amount: 0,
+                            Weight: 0,
+                            Status: 1
+                        })
+                    });
+                    const json = await response.json();
+                    console.log(json);
+                } catch(error) {
+                    console.log(error);
+                } finally {
+                    navigation.dispatch(
+                        StackActions.popToTop()
+                    );
+                }
+            } else {
+                alert("Please select date.");
             }
         }
     }

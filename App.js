@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import WelcomeScreen from './app/screens/WelcomeScreen';
 import NewAccount from './app/screens/Signup/NewAccount';
+import NewAccount2 from './app/screens/Signup/NewAccount2';
 import ForgotPassword from './app/screens/ForgotPassword/ForgotPassword';
 import Verification from './app/screens/ForgotPassword/Verification';
 import ChangePassword from './app/screens/ForgotPassword/ChangePassword';
@@ -36,6 +37,7 @@ export default function App() {
         <MainStack.Screen name="Verification" component={Verification} options={{headerShown: true, title: ''}} />
         <MainStack.Screen name="ChangePassword" component={ChangePassword} options={{headerShown: true, title: ''}} />
         <MainStack.Screen name="DashboardStack" component={CreateDashStack} />
+        <MainStack.Screen name="NewAccount2" component={NewAccount2} options={{headerShown: true, title: 'Password'}} />
       </MainStack.Navigator>
     </NavigationContainer>
   );

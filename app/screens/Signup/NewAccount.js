@@ -1,24 +1,43 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
+import React, {useState} from 'react';
+import { SafeAreaView, StyleSheet, View, Text, ScrollView } from 'react-native';
 import { COLORS } from '../../themes/Colors';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { StackActions } from '@react-navigation/native';
 
 function NewAccount({navigation}) {
+
+    const [firstname, setFirstName] = useState();
+    const [lastname, setLastName] = useState();
+    const [address, setAddress] = useState();
+    const [email, setEmail] = useState();
+    const [phonenumber, setPhoneNumber] = useState();
+
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: COLORS.SECONDARY}}>
             <View style={styles.pageContainer}>
                 <Text style={styles.header}>Create New Account</Text>
                 <Text style={styles.description}>Create an account so you can manage your personal finances.</Text>
-                <Input label='Enter phone number'/>
-                <Input label='Password' password={true}/>
-                <Input label='Confirm Password' password={true}/>
+                <Input defaultValue={firstname} onTextChange={newValue => setFirstName(newValue)} label='Firstname'/>
+                <Input defaultValue={lastname} onTextChange={newValue => setLastName(newValue)} label='Lastname'/>
+                <Input defaultValue={address} onTextChange={newValue => setAddress(newValue)} label='Address'/>
+                <Input defaultValue={email} onTextChange={newValue => setEmail(newValue)} label='Email'/>
+                <Input defaultValue={phonenumber} onTextChange={newValue => setPhoneNumber(newValue)} label='Phone number'/>
                 <View style={styles.registerBtnContainer}>
-                    <Button label='Register' onPress={() => {
-                        navigation.dispatch(
-                            StackActions.popToTop()
-                        );
+                    <Button label='Next' onPress={() => {
+                        if(firstname == null || lastname == null || 
+                            email == null || address == null || phonenumber == null){
+                            alert("Please complete all the fields.");
+                        } else {
+                            let basicInfo = {
+                                "Firstname":firstname,
+                                "Lastname":lastname,
+                                "Address":address,
+                                "Email":email,
+                                "Phonenumber":phonenumber
+                            };
+                            navigation.navigate("NewAccount2",{basicInfo});
+                        }
                     }}/>
                 </View>
             </View>
@@ -29,13 +48,14 @@ function NewAccount({navigation}) {
 const styles = StyleSheet.create({
     pageContainer: {
         alignItems: 'center',
-        padding: 40,
+        padding: 20,
         backgroundColor: COLORS.SECONDARY,
     },
     registerBtnContainer: {
         alignItems: 'center',
-        marginTop: '30%',
-        width: '100%'
+        marginTop: '10%',
+        width: '100%',
+        flex: 1
     },
     header: {
         fontSize: 20,

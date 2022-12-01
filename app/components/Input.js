@@ -2,11 +2,11 @@ import React from 'react';
 import {TextInput, StyleSheet, View, Keyboard} from 'react-native';
 import { COLORS } from '../themes/Colors';
 
-function Input({label, iconName, error, password=false, onFocus = () => {}, kbType, maxLength, onTextChange = () => {}}) {
+function Input({defaultValue,label, iconName, error, password=false, onFocus = () => {}, kbType, maxLength, onTextChange = () => {}}) {
     return (
         <View style={{marginBottom: 20}}>
             <View style={styles.inputContainer}>
-                <TextInput onChangeText={onTextChange} style={styles.textInput} placeholderTextColor='gray' placeholder={label} secureTextEntry={password} keyboardType={kbType} maxLength={maxLength}/>
+                <TextInput defaultValue={defaultValue} onChangeText={onTextChange} style={styles.textInput} placeholderTextColor='gray' placeholder={label} secureTextEntry={password} keyboardType={kbType} maxLength={maxLength}/>
             </View>
         </View>
     );
