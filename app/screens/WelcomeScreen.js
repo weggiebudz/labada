@@ -71,10 +71,15 @@ function WelcomeScreen({ navigation }) {
             } else {
                 alert("Invalid phone number or password.");
             }
-            //console.log(json);
         } catch(error) {
             alert(error.message);
         }
+    }
+
+    const onAdminLogin = () => {
+        navigation.dispatch(
+            StackActions.replace("AdminStack")
+        );
     }
 
     return (
@@ -100,7 +105,7 @@ function WelcomeScreen({ navigation }) {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.signupContainer}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={onAdminLogin}>
                         <Text style={styles.touchableText}>Login as Admin</Text>
                     </TouchableOpacity>
                 </View>

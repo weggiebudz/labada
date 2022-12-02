@@ -13,8 +13,13 @@ import Dashboard from './app/screens/Dashboard';
 import ScheduleOrder from './app/screens/ScheduleOrder/ScheduleOrder';
 import OrderDetails from './app/screens/OrderDetails/OrderDetails';
 
+import AdminLogin from './app/screens/AdminLogin';
+import RiderDashboard from './app/screens/AdminScreen/Rider/RiderDashboard';
+import AdminDashboard from './app/screens/AdminScreen/Admin/AdminDashboard';
+
 const MainStack = createNativeStackNavigator();
 const DashStack = createNativeStackNavigator();
+const AdminStack = createNativeStackNavigator();
 
 const CreateDashStack = () => {
   return (
@@ -23,6 +28,16 @@ const CreateDashStack = () => {
       <DashStack.Screen name="ScheduleOrder" component={ScheduleOrder} options={{headerShown: true, title: 'Book Pick Up'}}/>
       <DashStack.Screen name="OrderDetails" component={OrderDetails} options={{headerShown: true, title: 'Order Details'}}/>
     </DashStack.Navigator>
+  );
+}
+
+const CreateAdminStack = () => {
+  return(
+    <AdminStack.Navigator initialRouteName='AdminLogin' screenOptions={{headerShown: false}}>
+      <AdminStack.Screen name='AdminLogin' component={AdminLogin} />
+      <AdminStack.Screen name='RiderDashboard' component={RiderDashboard}/>
+      <AdminStack.Screen name='AdminDashboard' component={AdminDashboard}/>
+    </AdminStack.Navigator>
   );
 }
 
@@ -38,6 +53,7 @@ export default function App() {
         <MainStack.Screen name="ChangePassword" component={ChangePassword} options={{headerShown: true, title: ''}} />
         <MainStack.Screen name="DashboardStack" component={CreateDashStack} />
         <MainStack.Screen name="NewAccount2" component={NewAccount2} options={{headerShown: true, title: 'Password'}} />
+        <MainStack.Screen name="AdminStack" component={CreateAdminStack} />
       </MainStack.Navigator>
     </NavigationContainer>
   );
