@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, Text, StyleSheet, FlatList, View, Platform, TouchableOpacity } from 'react-native';
 import { COLORS, SAFEAREAVIEW } from '../../themes/Colors';
 import CalendarPicker from 'react-native-calendar-picker';
@@ -10,12 +10,29 @@ import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { ROUTES } from '../../../Network';
+import * as SQLite from 'expo-sqlite';
 
 function ScheduleOrder({navigation}) {
+    const db = SQLite.openDatabase('labada_db');
+    const [userInfo, setUserInfo] = useState();
     const [time, setDate] = useState(formatAMPM(new Date()));
     const [date, setPickDate] = useState();
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+    useEffect(() => {
+        db.transaction(tx => {
+            tx.executeSql(`SELECT * FROM credentials`,
+            [],
+            (err, result) => {
+                const userContext = result.rows._array[0];
+                setUserInfo(userContext);
+            },
+            error => {
+                alert(error.message);
+            });
+        });
+    }, []);
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -103,7 +120,7 @@ function ScheduleOrder({navigation}) {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            Customer_ID: 1,
+                            Customer_ID: userInfo.clientid,
                             Pickup_Date: date,
                             Time: time,
                             Deliver_Date: null,

@@ -8,15 +8,30 @@ import FullButton from '../components/FullButton';
 import { StackActions } from '@react-navigation/native';
 import { ROUTES } from '../../Network';
 import { useEffect } from 'react';
+import * as SQLite from 'expo-sqlite';
 
 function Dashboard({navigation}) {
+    const [user, setUser] = useState({});
     const [orders, setOrders] = useState([]);
+    const db = SQLite.openDatabase('labada_db');
 
     useEffect(() => {
-        loadOrderHistory();
+        db.transaction(tx => {
+            tx.executeSql(`SELECT * FROM credentials`,
+            null,
+            (err, result) => {
+                const userContext = result.rows._array[0];
+                setUser(userContext);
+                loadOrderHistory(userContext);
+            },
+            error => {
+                alert(error.message);
+            }
+            );
+        });
     }, []);
 
-    const loadOrderHistory = async () => {
+    const loadOrderHistory = async (userInfo) => {
         try{
             const response = await fetch(ROUTES.URL + '/getOrderHistory', {
                 method: 'POST',
@@ -25,7 +40,7 @@ function Dashboard({navigation}) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    customerid: 1
+                    customerid: userInfo.clientid
                 })
             });
             const json = await response.json();
@@ -40,9 +55,19 @@ function Dashboard({navigation}) {
     }
 
     const onLogout = () => {
-        navigation.dispatch(
-            StackActions.replace('WelcomeScreen')
-        );
+        db.transaction(tx => {
+            tx.executeSql(`DELETE FROM credentials`,
+            [],
+            () => {
+                navigation.dispatch(
+                    StackActions.replace('WelcomeScreen')
+                );
+            },
+            error => {
+                alert(error.message);
+            }
+            );
+        });
     }
 
     const onOrderDetails = (item) => {
@@ -57,8 +82,8 @@ function Dashboard({navigation}) {
                     source={require('../assets/profile.png')}/>
                     <View>
                         <View style={{flex: 1, justifyContent: 'center', paddingHorizontal: 15}}>
-                            <Text style={styles.nametag}>Hi, Johnny Knoxville</Text>
-                            <Text style={styles.address}>Siaton, Negros Oriental</Text>
+                            <Text style={styles.nametag}>Hi, {user.fullname}</Text>
+                            <Text style={styles.address}>{user.address}</Text>
                         </View>
                     </View>
                     <View style={{ flex: 1}}>

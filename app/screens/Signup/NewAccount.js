@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import { SafeAreaView, StyleSheet, View, Text, ScrollView } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Text, ScrollView, Keyboard } from 'react-native';
 import { COLORS } from '../../themes/Colors';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { StackActions } from '@react-navigation/native';
+import { ROUTES } from '../../../Network';
 
 function NewAccount({navigation}) {
 
@@ -22,21 +23,46 @@ function NewAccount({navigation}) {
                 <Input defaultValue={lastname} onTextChange={newValue => setLastName(newValue)} label='Lastname'/>
                 <Input defaultValue={address} onTextChange={newValue => setAddress(newValue)} label='Address'/>
                 <Input defaultValue={email} onTextChange={newValue => setEmail(newValue)} label='Email'/>
-                <Input defaultValue={phonenumber} onTextChange={newValue => setPhoneNumber(newValue)} label='Phone number'/>
+                <Input defaultValue={phonenumber} maxLength={11} kbType='numeric' onTextChange={(newValue) => {
+                    setPhoneNumber(newValue)
+                    if(newValue.length >= 11){
+                        Keyboard.dismiss();
+                    }
+                    }} label='Phone number'/>
                 <View style={styles.registerBtnContainer}>
-                    <Button label='Next' onPress={() => {
+                    <Button label='Next' onPress={async () => {
                         if(firstname == null || lastname == null || 
                             email == null || address == null || phonenumber == null){
                             alert("Please complete all the fields.");
                         } else {
-                            let basicInfo = {
-                                "Firstname":firstname,
-                                "Lastname":lastname,
-                                "Address":address,
-                                "Email":email,
-                                "Phonenumber":phonenumber
-                            };
-                            navigation.navigate("NewAccount2",{basicInfo});
+                            try{
+                                const response = await fetch(ROUTES.URL + '/checkmobile', {
+                                    method: 'POST',
+                                    headers: {
+                                        Accept: 'application/json',
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        mobilephone: phonenumber
+                                    })
+                                });
+                                const json = await response.json();
+                    
+                                if(!json.mobilephone){
+                                    let basicInfo = {
+                                        "Firstname":firstname,
+                                        "Lastname":lastname,
+                                        "Address":address,
+                                        "Email":email,
+                                        "Phonenumber":phonenumber
+                                    };
+                                    navigation.navigate("NewAccount2",{basicInfo});
+                                } else {
+                                    alert('Phone number unavailable.');
+                                }
+                            } catch(error) {
+                                alert(error.message);
+                            }
                         }
                     }}/>
                 </View>
