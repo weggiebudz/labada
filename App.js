@@ -16,6 +16,7 @@ import OrderDetails from './app/screens/OrderDetails/OrderDetails';
 import AdminLogin from './app/screens/AdminLogin';
 import RiderDashboard from './app/screens/AdminScreen/Rider/RiderDashboard';
 import AdminDashboard from './app/screens/AdminScreen/Admin/AdminDashboard';
+import RiderOrderDetails from './app/screens/AdminScreen/Rider/RiderOrderDetails';
 
 const MainStack = createNativeStackNavigator();
 const DashStack = createNativeStackNavigator();
@@ -37,6 +38,7 @@ const CreateAdminStack = () => {
       <AdminStack.Screen name='AdminLogin' component={AdminLogin} />
       <AdminStack.Screen name='RiderDashboard' component={RiderDashboard}/>
       <AdminStack.Screen name='AdminDashboard' component={AdminDashboard}/>
+      <AdminStack.Screen name='RiderOrderDetails' component={RiderOrderDetails} options={{headerShown: true, title: 'Order Details'}}/>
     </AdminStack.Navigator>
   );
 }
