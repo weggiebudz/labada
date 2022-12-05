@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, View, StyleSheet, Image } from 'react-native';
+import { SafeAreaView, Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { COLORS, SAFEAREAVIEW } from '../themes/Colors';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -83,6 +83,12 @@ function AdminLogin({navigation}) {
         }
     }
 
+    const onMemberLogin = () => {
+        navigation.dispatch(
+            StackActions.replace("WelcomeScreen")
+        );
+    }
+
     return (
         <SafeAreaView style={SAFEAREAVIEW.droidsafearea}>
             <View style={styles.pageContainer}>
@@ -94,6 +100,11 @@ function AdminLogin({navigation}) {
                 <Input label='Username' maxLength={11} onTextChange={newValue => setUsername(newValue)}/>
                 <Input label='Password' password={true} onTextChange={newValue => setPassword(newValue)}/>
                 <Button label='Login →' onPress={onLogin}/>
+                <View style={styles.signupContainer}>
+                    <TouchableOpacity onPress={onMemberLogin}>
+                        <Text style={styles.touchableText}>Login as member</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </SafeAreaView>
     );
@@ -113,7 +124,17 @@ const styles = StyleSheet.create({
     imageTitle: {
         width: 250,
         height: 130
-    }
+    },
+    signupContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        marginTop: 40
+    },
+    touchableText: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        color: COLORS.PRIMARY
+    },
 })
 
 export default AdminLogin;

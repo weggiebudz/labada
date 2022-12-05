@@ -33,7 +33,7 @@ function RiderDashboard({navigation}) {
     }
 
     const onOrderDetails = (item) => {
-        navigation.navigate('RiderOrderDetails',{item});
+        navigation.navigate('Services',{item});
     }
 
     useEffect(() => {

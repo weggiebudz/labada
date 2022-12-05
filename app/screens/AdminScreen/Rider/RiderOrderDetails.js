@@ -8,8 +8,11 @@ import ItemCard from '../../../components/ItemCard';
 import { COLORS } from '../../../themes/Colors';
 
 function RiderOrderDetails({route, navigation}) {
-    const item = route.params.item;
+    const item = route.params.data.order;
+    const itemService = route.params.data.service;
     const [itemList, setItemList] = useState([]);
+    const [weight, setWeight] = useState('');
+    const [amount, setAmount] = useState('');
 
     const getItems = async () => {
         try{
@@ -23,6 +26,27 @@ function RiderOrderDetails({route, navigation}) {
             });
             const json = await response.json();
             setItemList(json);
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    const orderUpdateSave = async () => {
+        try{
+            const response = await fetch(ROUTES.URL + '/updateOrder', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    orderitems : itemList,
+                    order: item,
+                    weight: weight,
+                    amount: amount
+                })
+            });
+            const json = await response.json();
         } catch(error) {
             console.log(error);
         }
@@ -48,9 +72,10 @@ function RiderOrderDetails({route, navigation}) {
 
     const onOpen = (name) => {
         if(name=='bt_Save'){
- 
-        } else if (name=='bt_Add'){
-            setModalVisible(true);
+            orderUpdateSave();
+            navigation.dispatch(
+                StackActions.popToTop()
+            );
         }
     }
 
@@ -69,6 +94,18 @@ function RiderOrderDetails({route, navigation}) {
         default:
             statusIndex = require('../../../assets/complete.png');
             break;
+    }
+
+    const onChangeWeight = (wgt) => {
+        let total = 0;
+        if(itemService.serviceid == 3){
+            total = (itemService.rate / 1) * wgt;
+        } else {
+            total = (itemService.rate / 8) * wgt;
+        }
+
+        setWeight(wgt);
+        setAmount(total.toLocaleString(undefined, {maximumFractionDigits:2}));
     }
 
     return (
@@ -105,10 +142,10 @@ function RiderOrderDetails({route, navigation}) {
                         </View>
                     }/>
                     <View style={styles.inputbox}>
-                        <TextInput style={{fontWeight: 'bold', fontSize: 20}} placeholder='Weight' keyboardType='numeric'/>
+                        <TextInput style={{fontWeight: 'bold', fontSize: 20}} onChangeText={newValue => onChangeWeight(newValue)} defaultValue={weight} placeholder='Weight' keyboardType='decimal-pad'/>
                     </View>
                     <View style={styles.inputbox}>
-                        <TextInput style={{fontWeight: 'bold', fontSize: 20}} placeholder='Amount' keyboardType='numeric'/>
+                        <TextInput style={{fontWeight: 'bold', fontSize: 20}} placeholder='Amount' defaultValue={amount} keyboardType='decimal-pad' editable={false}/>
                     </View>
                 </View>
                 <FloatingAction color={COLORS.PRIMARY} actions={actions} onPressItem={onOpen}/>

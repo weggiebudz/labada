@@ -152,7 +152,7 @@ function ScheduleOrder({navigation}) {
                 selectedDayColor={COLORS.PRIMARY} 
                 selectedDayTextColor={COLORS.SECONDARY} 
                 //selectedStartDate ={new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate() + 1)}
-                minDate={new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate() + 1)} 
+                minDate={new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate())} 
                 onDateChange={onDateChange}/>
                 <View style={{margin: 15, flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.time}>Pick Up Time : </Text>

@@ -24,6 +24,7 @@ function OrderDetails({route, navigation}) {
                 })
             });
             const json = await response.json();
+            console.log(json);
             setOrderItems(json);
         } catch(error) {
             console.log(error);
