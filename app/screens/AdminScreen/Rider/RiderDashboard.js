@@ -29,6 +29,7 @@ function RiderDashboard({navigation}) {
             setRefresh(false);
         } catch(error) {
             console.log(error);
+            setRefresh(false);
         }
     }
 
