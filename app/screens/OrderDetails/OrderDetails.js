@@ -71,7 +71,7 @@ function OrderDetails({route, navigation}) {
                     </View>
                     <View style={styles.labelContainer}>
                         <Text style={[styles.label, {flex: 1}]}>Deliver: </Text>
-                        <Text style={styles.label}>{item.deliver}</Text>
+                        <Text style={styles.label}>{new Date(item.deliver).toLocaleDateString()}</Text>
                     </View>
                     <View style={styles.labelContainer}>
                         <Text style={[styles.label, {flex: 1}]}>Weight: </Text>

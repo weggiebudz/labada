@@ -34,7 +34,12 @@ function RiderDashboard({navigation}) {
     }
 
     const onOrderDetails = (item) => {
-        navigation.navigate('Services',{item});
+        console.log(item);
+        if(item.Status == 1){
+            navigation.navigate('Services',{item});
+        } else {
+            navigation.navigate('RiderForDeliverDetails',{item});
+        }
     }
 
     useEffect(() => {

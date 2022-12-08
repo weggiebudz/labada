@@ -4,7 +4,7 @@ import { ROUTES } from '../../../../Network';
 import OrderCard from '../../../components/OrderCard';
 import { COLORS, SAFEAREAVIEW } from '../../../themes/Colors';
 
-function AdminOrders(props) {
+function AdminOrders({navigation}) {
     const [orders, setOrders] = useState([]);
     const [refresh, setRefresh] = useState(false);
 
@@ -32,15 +32,15 @@ function AdminOrders(props) {
         onGetOrders();
     },[]);
 
-    const onOrderDetails = () => {
-
+    const onOrderDetails = (item) => {
+        navigation.navigate('AdminOrderDetails',{item});
     }
 
     return (
         <SafeAreaView style={SAFEAREAVIEW.droidsafearea}>
             <View style={styles.pageContainer}>
-                <FlatList style={{width: '100%'}} data={orders} refreshControl={<RefreshControl refreshing={refresh} onRefresh={() => { }}/>} renderItem={({item}) => 
-                    <OrderCard onPress={() => {}} label={item.fullname + ' #' + item.Order_ID} statusDesc={item.address} status={item.Status} price={'₱' + item.Amount.toLocaleString(undefined, {maximumFractionDigits:2})}/>
+                <FlatList style={{width: '100%'}} data={orders} refreshControl={<RefreshControl refreshing={refresh} onRefresh={() => { onGetOrders() }}/>} renderItem={({item}) => 
+                    <OrderCard onPress={() => { onOrderDetails(item) }} label={item.fullname + ' #' + item.Order_ID} statusDesc={item.address} status={item.Status} price={'₱' + item.Amount.toLocaleString(undefined, {maximumFractionDigits:2})}/>
                 }/>
             </View>
         </SafeAreaView>
