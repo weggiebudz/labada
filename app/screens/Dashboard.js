@@ -9,13 +9,19 @@ import { StackActions } from '@react-navigation/native';
 import { ROUTES } from '../../Network';
 import { useEffect } from 'react';
 import * as SQLite from 'expo-sqlite';
+import io from 'socket.io-client';
 
 function Dashboard({navigation}) {
     const [user, setUser] = useState({});
     const [orders, setOrders] = useState([]);
     const db = SQLite.openDatabase('labada_db');
+    const socket = io(ROUTES.URL.replace('/api',''));
 
     useEffect(() => {
+        socket.on('message', message => {
+            console.log(message);
+        });
+
         db.transaction(tx => {
             tx.executeSql(`SELECT * FROM credentials`,
             null,
@@ -55,6 +61,7 @@ function Dashboard({navigation}) {
     }
 
     const onLogout = () => {
+        socket.disconnect();
         db.transaction(tx => {
             tx.executeSql(`DELETE FROM credentials`,
             [],
