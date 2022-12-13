@@ -35,7 +35,7 @@ function OrderCard({ onPress = () => {},label, price, statusDesc, status}) {
                 <View>
                 <Text style={styles.label}>{label}</Text>
                 <View style={{flexDirection: 'row', marginVertical: 5}}>
-                    <Text style={{fontWeight: 'bold'}}>{statusDesc}</Text>
+                    <Text style={{fontWeight: 'bold', flex: 1}}>{statusDesc}</Text>
                 </View>
                 </View>
                 <View style={{flex: 1}}>

@@ -33,7 +33,11 @@ function AdminOrders({navigation}) {
     },[]);
 
     const onOrderDetails = (item) => {
-        navigation.navigate('AdminOrderDetails',{item});
+        const params = {
+            'item': item,
+            'isOrderHistory': false
+        }
+        navigation.navigate('AdminOrderDetails',{params});
     }
 
     return (

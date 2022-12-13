@@ -34,7 +34,6 @@ function RiderDashboard({navigation}) {
     }
 
     const onOrderDetails = (item) => {
-        console.log(item);
         if(item.Status == 1){
             navigation.navigate('Services',{item});
         } else {

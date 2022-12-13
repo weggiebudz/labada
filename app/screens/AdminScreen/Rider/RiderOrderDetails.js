@@ -6,6 +6,7 @@ import { ROUTES } from '../../../../Network';
 import Button from '../../../components/Button';
 import ItemCard from '../../../components/ItemCard';
 import { COLORS } from '../../../themes/Colors';
+import * as SQLite from 'expo-sqlite';
 
 function RiderOrderDetails({route, navigation}) {
     const item = route.params.data.order;
@@ -13,6 +14,8 @@ function RiderOrderDetails({route, navigation}) {
     const [itemList, setItemList] = useState([]);
     const [weight, setWeight] = useState('');
     const [amount, setAmount] = useState('');
+    const db = SQLite.openDatabase('labada_db');
+    const [user, setUser] = useState('');
 
     const getItems = async () => {
         try{
@@ -31,6 +34,21 @@ function RiderOrderDetails({route, navigation}) {
         }
     }
 
+    const userContx = () => {
+        db.transaction(tx => {
+            tx.executeSql(`SELECT * FROM user`,
+            null,
+            (err, result) => {
+                const userContext = result.rows._array[0];
+                setUser(userContext);
+            },
+            error => {
+                alert(error.message);
+            }
+            );
+        });
+    }
+
     const orderUpdateSave = async () => {
         try{
             const response = await fetch(ROUTES.URL + '/updateOrder', {
@@ -43,7 +61,9 @@ function RiderOrderDetails({route, navigation}) {
                     orderitems : itemList,
                     order: item,
                     weight: weight,
-                    amount: amount
+                    amount: amount,
+                    serviceid: itemService.serviceid.toString(),
+                    riderid: user.userid
                 })
             });
             const json = await response.json();
@@ -53,6 +73,7 @@ function RiderOrderDetails({route, navigation}) {
     }
 
     useEffect(() => {
+        userContx();
         getItems();
     },[]);
 
@@ -105,7 +126,7 @@ function RiderOrderDetails({route, navigation}) {
         }
 
         setWeight(wgt);
-        setAmount(total.toLocaleString(undefined, {maximumFractionDigits:2}));
+        setAmount(total);
     }
 
     return (
@@ -145,7 +166,7 @@ function RiderOrderDetails({route, navigation}) {
                         <TextInput style={{fontWeight: 'bold', fontSize: 20}} onChangeText={newValue => onChangeWeight(newValue)} defaultValue={weight} placeholder='Weight' keyboardType='decimal-pad'/>
                     </View>
                     <View style={styles.inputbox}>
-                        <TextInput style={{fontWeight: 'bold', fontSize: 20}} placeholder='Amount' defaultValue={amount} keyboardType='decimal-pad' editable={false}/>
+                        <TextInput style={{fontWeight: 'bold', fontSize: 20}} placeholder='Amount' defaultValue={amount.toLocaleString(undefined, {maximumFractionDigits:2})} keyboardType='decimal-pad' editable={false}/>
                     </View>
                 </View>
                 <FloatingAction color={COLORS.PRIMARY} actions={actions} onPressItem={onOpen}/>

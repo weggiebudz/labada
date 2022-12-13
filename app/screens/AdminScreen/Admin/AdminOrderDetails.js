@@ -6,7 +6,8 @@ import OrderDetailsCard from '../../../components/OrderDetailsCard';
 import { COLORS } from '../../../themes/Colors';
 
 function AdminOrderDetails({route, navigation}) {
-    const ordItem = route.params.item;
+    const ordItem = route.params.params.item;
+    const [isOrderHistory, setIsOrderHistory] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
 
     const onLoadDetails = async () => {
@@ -30,6 +31,7 @@ function AdminOrderDetails({route, navigation}) {
 
     useEffect(() => {
         onLoadDetails();
+        setIsOrderHistory(route.params.params.isOrderHistory);
     }, []);
 
     let statusIndex = require('../../../assets/pickup.png');
@@ -107,7 +109,7 @@ function AdminOrderDetails({route, navigation}) {
                         </View>
                         <View style={styles.labelContainer}>
                             <Text style={[styles.label, {flex: 1}]}>Deliver: </Text>
-                            <Text style={styles.label}>{ordItem.Deliver_Date}</Text>
+                            <Text style={styles.label}>{ordItem.Deliver_Date.split('T')[0]}</Text>
                         </View>
                         <View style={styles.labelContainer}>
                             <Text style={[styles.label, {flex: 1}]}>Weight: </Text>
@@ -119,11 +121,14 @@ function AdminOrderDetails({route, navigation}) {
                         </View>
                     </View>
                     <View>
+                        {
+                        !isOrderHistory ?
                         <TouchableOpacity onPress={() => { onForDelivery() }}>
                             <View style={styles.button}>
                                 <Text style={{alignSelf: 'center', color: 'white', fontWeight: 'bold', fontSize: 18, textAlign: 'center',flex: 1}}>FOR DELIVERY</Text>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> : null
+                        }
                     </View>
                 </View>
             </View>
