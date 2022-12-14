@@ -48,7 +48,7 @@ const CreateAdminStack = () => {
       <AdminStack.Screen name='RiderOrderDetails' component={RiderOrderDetails} options={{headerShown: true, title: 'Order Details'}}/>
       <AdminStack.Screen name='Services' component={SelectService} options={{headerShown: true, title: 'Select Services'}} />
       <AdminStack.Screen name='AdminOrders' component={AdminOrders} options={{headerShown: true, title: 'Orders'}}/>
-      <AdminStack.Screen name='AdminSettings' component={AdminSettings} options={{headerShown: true, title: 'Settings'}}/>
+      <AdminStack.Screen name='AdminSettings' component={AdminSettings} options={{headerShown: true, title: 'Management'}}/>
       <AdminStack.Screen name='AdminOrderDetails' component={AdminOrderDetails} options={{headerShown: true, title: 'Order Details'}} />
       <AdminStack.Screen name='RiderForDeliverDetails' component={RiderForDeliverDetails} options={{headerShown: true, title: 'For Delivery Details'}} />
       <AdminStack.Screen name='AdminReports' component={AdminReports} options={{headerShown: true, title: 'Reports'}} />

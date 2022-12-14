@@ -19,7 +19,7 @@ function AdminDashboard({navigation}) {
             },
             {
                 "id": 1,
-                "label": "Settings",
+                "label": "Management",
                 "imagePath": require('../../../assets/gear.png')
             }
         ]);

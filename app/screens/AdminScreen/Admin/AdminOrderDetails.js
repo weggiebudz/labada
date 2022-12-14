@@ -109,7 +109,7 @@ function AdminOrderDetails({route, navigation}) {
                         </View>
                         <View style={styles.labelContainer}>
                             <Text style={[styles.label, {flex: 1}]}>Deliver: </Text>
-                            <Text style={styles.label}>{ordItem.Deliver_Date.split('T')[0]}</Text>
+                            <Text style={styles.label}>{ordItem.Deliver_Date ? ordItem.Deliver_Date.split('T')[0] : ordItem.Deliver_Date}</Text>
                         </View>
                         <View style={styles.labelContainer}>
                             <Text style={[styles.label, {flex: 1}]}>Weight: </Text>
