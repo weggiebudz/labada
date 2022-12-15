@@ -100,6 +100,10 @@ function AdminOrderDetails({route, navigation}) {
                     }/>
                     <View style={{padding: 15}}>
                         <View style={styles.labelContainer}>
+                            <Text style={[styles.label, {flex: 1}]}>With QR: </Text>
+                            <Text style={styles.label}>{ordItem.WithQRQty}</Text>
+                        </View>
+                        <View style={styles.labelContainer}>
                             <Text style={[styles.label, {flex: 1}]}>Pick up: </Text>
                             <Text style={styles.label}>{new Date(ordItem.Pickup_Date).toLocaleDateString()}</Text>
                         </View>

@@ -62,6 +62,10 @@ function OrderDetails({route, navigation}) {
                     }/>
                     <View style={{padding: 15}}>
                     <View style={styles.labelContainer}>
+                        <Text style={[styles.label, {flex: 1}]}>With QR: </Text>
+                        <Text style={styles.label}>{item.withqr}</Text>
+                    </View>
+                    <View style={styles.labelContainer}>
                         <Text style={[styles.label, {flex: 1}]}>Pick up: </Text>
                         <Text style={styles.label}>{new Date(item.pickup).toLocaleDateString()}</Text>
                     </View>

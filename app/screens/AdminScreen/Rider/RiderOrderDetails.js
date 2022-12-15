@@ -12,6 +12,7 @@ function RiderOrderDetails({route, navigation}) {
     const item = route.params.data.order;
     const itemService = route.params.data.service;
     const [itemList, setItemList] = useState([]);
+    const [withQRCode, setWithQRCode] = useState('');
     const [weight, setWeight] = useState('');
     const [amount, setAmount] = useState('');
     const db = SQLite.openDatabase('labada_db');
@@ -62,6 +63,7 @@ function RiderOrderDetails({route, navigation}) {
                     order: item,
                     weight: weight,
                     amount: amount,
+                    withqr: withQRCode,
                     serviceid: itemService.serviceid.toString(),
                     riderid: user.userid
                 })
@@ -163,6 +165,9 @@ function RiderOrderDetails({route, navigation}) {
                         </View>
                     }/>
                     <View style={styles.inputbox}>
+                        <TextInput style={{fontWeight: 'bold', fontSize: 20}} onChangeText={newValue => setWithQRCode(newValue)} defaultValue={withQRCode} placeholder='With QR Code' keyboardType='decimal-pad'/>
+                    </View>
+                    <View style={styles.inputbox}>
                         <TextInput style={{fontWeight: 'bold', fontSize: 20}} onChangeText={newValue => onChangeWeight(newValue)} defaultValue={weight} placeholder='Weight' keyboardType='decimal-pad'/>
                     </View>
                     <View style={styles.inputbox}>
@@ -210,7 +215,7 @@ const styles = StyleSheet.create({
         borderWidth: 1, 
         borderRadius: 10, 
         backgroundColor: 'white', 
-        margin: 10}
+        margin: 5}
 })
 
 export default RiderOrderDetails;

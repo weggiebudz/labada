@@ -103,7 +103,7 @@ function Dashboard({navigation}) {
                     </View>
                 </View>
                 <Text style={styles.titleHeader}>Order History</Text>
-                <FlatList style={{width: '100%'}} data={orders} refreshControl={<RefreshControl refreshing={false} onRefresh={() => {}}/>} renderItem={({item}) => 
+                <FlatList style={{width: '100%'}} data={orders} refreshControl={<RefreshControl refreshing={false} onRefresh={() => { loadOrderHistory(user) }}/>} renderItem={({item}) => 
                     <OrderCard onPress={() => {onOrderDetails(item)}} label={'Order #' + item.id + ' (' + item.kilo + ' kilo/s)'} statusDesc={item.statusDesc} status={item.status} price={'₱' + item.amount.toLocaleString(undefined, {maximumFractionDigits:2})}/>
                 }/>
                 <View style={{width: '100%'}}>
