@@ -30,7 +30,8 @@
     "react-native-svg": "13.4.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-vector-icons": "^9.2.0",
-    "socket.io-client": "^4.5.4"
+    "socket.io-client": "^4.5.4",
+    "expo-checkbox": "~2.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

@@ -7,6 +7,7 @@ import Button from '../../../components/Button';
 import ItemCard from '../../../components/ItemCard';
 import { COLORS } from '../../../themes/Colors';
 import * as SQLite from 'expo-sqlite';
+import Checkbox from 'expo-checkbox';
 
 function RiderOrderDetails({route, navigation}) {
     const item = route.params.data.order;
@@ -15,8 +16,62 @@ function RiderOrderDetails({route, navigation}) {
     const [withQRCode, setWithQRCode] = useState('');
     const [weight, setWeight] = useState('');
     const [amount, setAmount] = useState('');
+    const [codeAmount, setCodeAmount] = useState(0);
     const db = SQLite.openDatabase('labada_db');
     const [user, setUser] = useState('');
+
+    const [itemCode, setItemCode] = useState([
+        {
+            id: 1,
+            desc: 'L-001',
+            isChecked: false
+        },
+        {
+            id: 2,
+            desc: 'L-002',
+            isChecked: false
+        },        
+        {
+            id: 3,
+            desc: 'L-003',
+            isChecked: false
+        },
+        {
+            id: 4,
+            desc: 'L-004',
+            isChecked: false
+        },
+        {
+            id: 5,
+            desc: 'L-005',
+            isChecked: false
+        },
+        {
+            id: 6,
+            desc: 'L-006',
+            isChecked: false
+        },
+        {
+            id: 7,
+            desc: 'L-007',
+            isChecked: false
+        },
+        {
+            id: 8,
+            desc: 'L-008',
+            isChecked: false
+        },
+        {
+            id: 9,
+            desc: 'L-009',
+            isChecked: false
+        },
+        {
+            id: 10,
+            desc: 'L-010',
+            isChecked: false
+        },
+    ]);
 
     const getItems = async () => {
         try{
@@ -65,7 +120,8 @@ function RiderOrderDetails({route, navigation}) {
                     amount: amount,
                     withqr: withQRCode,
                     serviceid: itemService.serviceid.toString(),
-                    riderid: user.userid
+                    riderid: user.userid,
+                    itemCode: itemCode
                 })
             });
             const json = await response.json();
@@ -78,6 +134,11 @@ function RiderOrderDetails({route, navigation}) {
         userContx();
         getItems();
     },[]);
+
+    useEffect(() => {
+        setWithQRCode(itemCode.filter(a => a.isChecked).length.toString());
+        setCodeAmount((itemCode.filter(a => a.isChecked).length * 5));
+    }, [itemCode]);
 
     const actions = [
         {
@@ -164,8 +225,21 @@ function RiderOrderDetails({route, navigation}) {
                             </View>
                         </View>
                     }/>
+                    <View>
+                        <FlatList style={{width: '100%', padding: 5}} data={itemCode} numColumns={4} renderItem={({item}) => 
+                            <View>
+                                <TouchableOpacity style={{flexDirection: 'row', padding: 5}} onPress={ async () => {
+                                    setItemCode(itemCode.map((items) => item.id === items.id ? {...items, isChecked: !item.isChecked} : items))
+                                }}>
+                                    <Checkbox value={item.isChecked}/>
+                                    <Text style={{paddingLeft: 5}}>{item.desc}</Text>
+                                </TouchableOpacity>
+
+                            </View>
+                        }/>
+                    </View>
                     <View style={styles.inputbox}>
-                        <TextInput style={{fontWeight: 'bold', fontSize: 20}} onChangeText={newValue => setWithQRCode(newValue)} defaultValue={withQRCode} placeholder='With QR Code' keyboardType='decimal-pad'/>
+                        <TextInput style={{fontWeight: 'bold', fontSize: 20}} onChangeText={newValue => setWithQRCode(newValue)} defaultValue={withQRCode} placeholder='With QR Code' keyboardType='decimal-pad' editable={false}/>
                     </View>
                     <View style={styles.inputbox}>
                         <TextInput style={{fontWeight: 'bold', fontSize: 20}} onChangeText={newValue => onChangeWeight(newValue)} defaultValue={weight} placeholder='Weight' keyboardType='decimal-pad'/>

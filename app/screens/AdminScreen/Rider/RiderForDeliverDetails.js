@@ -8,6 +8,7 @@ import { COLORS } from '../../../themes/Colors';
 function RiderForDeliverDetails({route, navigation}) {
     const ordItem = route.params.item;
     const [orderItems, setOrderItems] = useState([]);
+    const [orderCode, setOrderCode] = useState([]);
 
     const onLoadDetails = async () => {
         try{
@@ -28,8 +29,28 @@ function RiderForDeliverDetails({route, navigation}) {
         }
     }
 
+    const onGetOrderCodes = async () => {
+        try{
+            const response = await fetch(ROUTES.URL + '/getOrderCodes', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    orderid: ordItem.Order_ID
+                })
+            });
+            const json = await response.json();
+            setOrderCode(json);
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         onLoadDetails();
+        onGetOrderCodes();
     }, []);
 
     let statusIndex = require('../../../assets/pickup.png');
@@ -121,6 +142,13 @@ function RiderForDeliverDetails({route, navigation}) {
                             <Text style={[styles.label, {flex: 1}]}>Amount: </Text>
                             <Text style={[styles.label, {color: 'green'}]}>₱ {ordItem.Amount.toLocaleString(undefined, {maximumFractionDigits:2})}</Text>
                         </View>
+                    </View>
+                    <View>
+                        <FlatList style={{width: '100%', padding: 5}} data={orderCode} numColumns={4} renderItem={({item}) => 
+                            <View style={{backgroundColor: 'grey', margin: 2}}>
+                                <Text style={{padding: 10, fontWeight: 'bold', color: COLORS.SECONDARY }}>{item.ItemCode_Desc}</Text>
+                            </View>
+                        }/>
                     </View>
                     <View>
                         <TouchableOpacity onPress={() => { onDelivered() }}>
