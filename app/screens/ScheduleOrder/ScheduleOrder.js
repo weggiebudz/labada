@@ -17,6 +17,7 @@ function ScheduleOrder({navigation}) {
     const [userInfo, setUserInfo] = useState();
     const [time, setDate] = useState(formatAMPM(new Date()));
     const [date, setPickDate] = useState();
+    const [services, setServices] = useState([]);
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -32,7 +33,32 @@ function ScheduleOrder({navigation}) {
                 alert(error.message);
             });
         });
+        getServices();
     }, []);
+
+    const getServices = async () => {
+        try{
+            const response = await fetch(ROUTES.URL + '/getServices', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            });
+            const json = await response.json();
+            setServices(json.map((item, index) => {
+                return{
+                    id: item.serviceid,
+                    imagePath: require('../../assets/regular.png'),
+                    label: item.servicename,
+                    rate: item.serviceid !== 3 ? `₱${item.rate} per 8kg` : `₱${item.rate} per Set`
+                }
+            }));
+        } catch(error) {
+            console.log(error);
+        }
+    }
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -61,39 +87,6 @@ function ScheduleOrder({navigation}) {
     const onDateChange = (item) => {
         setPickDate(new Date(item).getFullYear() + "-" + (new Date(item).getMonth() + 1) + "-" +  new Date(item).getDate());
     }
-
-    const services = [
-        {
-            id: 1,
-            imagePath: require('../../assets/regular.png'),
-            label: 'Regular',
-            rate: '₱160 per 8Kg'
-        },
-        {
-            id: 2,
-            imagePath: require('../../assets/express.png'),
-            label: 'Express',
-            rate: '₱200 per 8Kg'
-        },
-        {
-            id: 3,
-            imagePath: require('../../assets/dry.png'),
-            label: 'Dry Clean',
-            rate: '₱220 per Set'
-        },
-        {
-            id: 4,
-            imagePath: require('../../assets/beddings.png'),
-            label: 'Beddings',
-            rate: '₱200 per 8Kg'
-        },
-        {
-            id: 5,
-            imagePath: require('../../assets/mixlaundry.png'),
-            label: 'Mix Laundry',
-            rate: '₱180 per 8Kg'
-        },
-    ]
 
     const actions = [
         {

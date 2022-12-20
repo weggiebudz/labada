@@ -41,7 +41,7 @@ function AdminOrderHistory({navigation}) {
     }
 
     return (
-        <SafeAreaView style={SAFEAREAVIEW.droidsafearea}>
+        <SafeAreaView>
             <View style={styles.pageContainer}>
                 <FlatList style={{width: '100%'}} data={orders} refreshControl={<RefreshControl refreshing={refresh} onRefresh={() => { onGetOrders() }}/>} renderItem={({item}) => 
                     <OrderCard onPress={() => { onOrderDetails(item) }} label={item.fullname + ' #' + item.Order_ID} statusDesc={item.address} status={item.Status} price={'₱' + item.Amount.toLocaleString(undefined, {maximumFractionDigits:2})}/>
