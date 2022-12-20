@@ -105,8 +105,8 @@ function AdminReports(props) {
             <View style={styles.chart}>
                 <PieChart style={{ height: 150, width: 150}} 
                 data={pieChartDataRounded} 
-                innerRadius={35}
-                outerRadius={70}
+                innerRadius={'30%'}
+                outerRadius={'68%'}
                 labelRadius={120}
                 sort={(a, b) => b.key - a.key}
                 >
@@ -125,10 +125,10 @@ function AdminReports(props) {
             </View>
             <Text style={styles.header}>Sales</Text>
             <View style={styles.chart}>
-                <PieChart style={{ height: 150, width: 150}} 
+                <PieChart style={{ height: 150,width: 150}} 
                 data={pieChartSales} 
-                innerRadius={35}
-                outerRadius={70}
+                innerRadius={'30%'}
+                outerRadius={'68%'}
                 labelRadius={120}
                 sort={(a, b) => b.key - a.key}
                 >

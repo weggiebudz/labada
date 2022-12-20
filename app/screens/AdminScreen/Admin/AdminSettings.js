@@ -11,6 +11,10 @@ function AdminSettings({navigation}) {
         navigation.navigate('AdminOrderHistory');
     }
 
+    const onServices = () => {
+        navigation.navigate('AdminServices');
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <TouchableOpacity>
@@ -23,6 +27,12 @@ function AdminSettings({navigation}) {
                 <View style={styles.button}>
                     <Image style={styles.image} source={require('../../../assets/item.png')}/>
                     <Text style={styles.text}>Items</Text>
+                </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onServices}>
+                <View style={styles.button}>
+                    <Image style={styles.image} source={require('../../../assets/laundryorder.png')}/>
+                    <Text style={styles.text}>Services</Text>
                 </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={onReportsScreen}>
