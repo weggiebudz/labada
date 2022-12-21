@@ -5,7 +5,7 @@ import ImageButton from '../components/ImageButton';
 import { COLORS, SAFEAREAVIEW } from '../themes/Colors'
 import OrderCard from '../components/OrderCard';
 import FullButton from '../components/FullButton';
-import { StackActions } from '@react-navigation/native';
+import { StackActions, useFocusEffect } from '@react-navigation/native';
 import { ROUTES } from '../../Network';
 import { useEffect } from 'react';
 import * as SQLite from 'expo-sqlite';
@@ -36,6 +36,12 @@ function Dashboard({navigation}) {
             );
         });
     }, []);
+
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         loadOrderHistory(user);
+    //       }, [])
+    // );
 
     const loadOrderHistory = async (userInfo) => {
         try{

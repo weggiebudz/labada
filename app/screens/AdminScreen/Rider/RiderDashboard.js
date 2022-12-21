@@ -3,7 +3,7 @@ import { SafeAreaView, Text, View, StyleSheet, Image, TouchableOpacity, FlatList
 import { COLORS, SAFEAREAVIEW } from '../../../themes/Colors';
 import { useEffect } from 'react';
 import * as SQLite from 'expo-sqlite';
-import { StackActions } from '@react-navigation/native';
+import { StackActions, useFocusEffect } from '@react-navigation/native';
 import { ROUTES } from '../../../../Network';
 import OrderCard from '../../../components/OrderCard';
 
@@ -56,6 +56,12 @@ function RiderDashboard({navigation}) {
         });
         loadOrders();
     },[]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            loadOrders();
+          }, [])
+    );
 
     const onLogout = () => {
         db.transaction(tx => {

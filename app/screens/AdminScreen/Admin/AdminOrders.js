@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, RefreshControl, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ROUTES } from '../../../../Network';
@@ -31,6 +32,11 @@ function AdminOrders({navigation}) {
     useEffect(() => {
         onGetOrders();
     },[]);
+    useFocusEffect(
+        React.useCallback(() => {
+            onGetOrders();
+          }, [])
+    );
 
     const onOrderDetails = (item) => {
         const params = {
