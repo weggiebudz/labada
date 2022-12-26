@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, RefreshControl, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, FlatList, RefreshControl, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LineChart } from 'expo-chart-kit';
 import { Dimensions } from 'react-native'
 import { ROUTES } from '../../../../Network';
@@ -8,6 +8,8 @@ import { Circle, Line, G} from 'react-native-svg'
 import { PieChartData } from 'react-native-svg-charts'
 import OrderDetailsCard from '../../../components/OrderDetailsCard';
 import { COLORS } from '../../../themes/Colors';
+import DatePicker from 'react-native-date-picker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 function AdminReports(props) {
     const [itemLabel, setItemLabel] = useState([]);
@@ -16,21 +18,55 @@ function AdminReports(props) {
     const [sales, setSales] = useState([]);
     const [total, setTotal] = useState([]);
     const [totalSales, setTotalSales] = useState(0);
- 
+
+    const [salesSummary, setSalesSummary] = useState([]);
+
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [date, setDate] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1).toDateString());
+    const [dateValue, setDateValue] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
+
+    const [isDatePickerVisibleTo, setDatePickerVisibilityTo] = useState(false);
+    const [dateTo, setDateTo] = useState(new Date().toDateString());
+    const [dateToValue, setDateToValue] = useState(new Date());
+
     useEffect(() => {
         onLoadScreen();
         onGetSales();
     },[]);
 
+    const onGetSalesSummary = async () => {
+        try {
+            const response = await fetch(ROUTES.URL + '/getSalesSummary', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    dateFrom: dateValue,
+                    dateTo: dateToValue
+                })
+            });
+            const json = await response.json();
+            setSalesSummary(json);
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     const onGetSales = async () => {
         try{
+            onGetSalesSummary();
             const response = await fetch(ROUTES.URL + '/getSales', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({})
+                body: JSON.stringify({
+                    dateFrom: dateValue,
+                    dateTo: dateToValue
+                })
             });
             const json = await response.json();
             let value = [];
@@ -99,31 +135,67 @@ function AdminReports(props) {
     const pieChartDataRounded = getPieChartDataRounded(itemValue);
     const pieChartSales = getPieChartDataRounded(total);
 
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+      };
+    
+      const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+      };
+    
+      const handleConfirm = (date) => {
+        setDate(date.toDateString());
+        setDateValue(date);
+        hideDatePicker();
+      };
+
+      const showDatePickerTo = () => {
+        setDatePickerVisibilityTo(true);
+      };
+    
+      const hideDatePickerTo = () => {
+        setDatePickerVisibilityTo(false);
+      };
+
+      const handleConfirmTo = (dateTo) => {
+        setDateTo(dateTo.toDateString());
+        setDateToValue(dateTo);
+        hideDatePickerTo();
+      };
+
     return (
         <SafeAreaView>
-            <Text style={styles.header}>Order Items</Text>
-            <View style={styles.chart}>
-                <PieChart style={{ height: 150, width: 150}} 
-                data={pieChartDataRounded} 
-                innerRadius={'30%'}
-                outerRadius={'68%'}
-                labelRadius={120}
-                sort={(a, b) => b.key - a.key}
-                >
-                </PieChart>
-                <View style={{ flexDirection: 'row', flex: 1, padding: 10}}>
-                    <FlatList style={{width: '100%', padding: 10}} data={orderItem} refreshControl={<RefreshControl refreshing={false} onRefresh={() => {}}/>} renderItem={({item}) => 
-                        <View style={{flexDirection: 'row', alignItems: 'center', margin: 2, flex: 1}}>
-                            <View style={{width: 20, height: 20, backgroundColor: item.Color, marginRight: 10, borderRadius: 5}}/>
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={[styles.label, {flex: 1}]}>{item.Description}</Text>
-                                <Text style={[styles.label, {flex: 1, textAlign: 'center'}]}>{item.Qty}</Text>
-                            </View>
-                        </View>                      
-                    }/>
-                </View>
+            <Text style={styles.header}>SALES</Text>
+            <View style={{margin: 7, flexDirection: 'row', alignItems: 'center', marginHorizontal: 20}}>
+                    <Text style={styles.time}>Date From : </Text>
+                    <TouchableOpacity onPress={showDatePicker} style={[styles.time, { padding: 7, borderRadius: 7, borderWidth: 1, height: 30}]}>
+                        <Text style={styles.time}>{date}</Text>
+                    </TouchableOpacity>
+                    <DateTimePickerModal
+                        modal
+                        isDarkModeEnabled={true}
+                        isVisible={isDatePickerVisible}
+                        mode="date"
+                        onConfirm={handleConfirm}
+                        onCancel={hideDatePicker}
+                        value={dateValue}
+                    />
             </View>
-            <Text style={styles.header}>Sales</Text>
+            <View style={{margin: 7, flexDirection: 'row', alignItems: 'center' , marginHorizontal: 20}}>
+                    <Text style={styles.time}>Date To : </Text>
+                    <TouchableOpacity onPress={showDatePickerTo} style={[styles.time, { padding: 7, borderRadius: 7, borderWidth: 1, height: 30}]}>
+                        <Text style={styles.time}>{dateTo}</Text>
+                    </TouchableOpacity>
+                    <DateTimePickerModal
+                        modal
+                        isDarkModeEnabled={true}
+                        isVisible={isDatePickerVisibleTo}
+                        mode="date"
+                        onConfirm={handleConfirmTo}
+                        onCancel={hideDatePickerTo}
+                        value={dateToValue}
+                    />
+            </View>
             <View style={styles.chart}>
                 <PieChart style={{ height: 150,width: 150}} 
                 data={pieChartSales} 
@@ -149,10 +221,28 @@ function AdminReports(props) {
                         </View>
                     </View>
             </View>
-            <View style={{alignItems: 'center', margin: 30}}>
-                <TouchableOpacity>
+            <View style={{padding: 10, height: 200}}>
+                <View style={{flexDirection: 'row', padding: 7}}>
+                    <Text style={[styles.label, {flex: 1}]}>Date</Text>
+                    <Text style={[styles.label, {flex: 1, alignSelf: 'center'}]}>Service Name</Text>
+                    <Text style={[styles.label, {flex: 1, textAlign: 'right'}]}>Weight</Text>
+                    <Text style={[styles.label, {flex: 1, textAlign: 'right'}]}>Amount</Text>
+                </View>
+                <FlatList style={{width: '100%'}} data={salesSummary} refreshControl={<RefreshControl refreshing={false} onRefresh={() => {}}/>} renderItem={({item}) => 
+                    <View style={{flexDirection: 'row', alignItems: 'center', margin: 2, flex: 1}}>
+                        <View style={{flexDirection: 'row', backgroundColor: '#D6EAF8', padding: 5, borderRadius: 5}}>
+                            <Text style={[styles.label, {flex: 1}]}>{item.DeliverDate}</Text>
+                            <Text style={[styles.label, {flex: 1, alignSelf: 'center'}]}>{item.servicename}</Text>
+                            <Text style={[styles.label, {flex: 1, textAlign: 'right'}]}>{item.Weight}</Text>
+                            <Text style={[styles.label, {flex: 1, textAlign: 'right'}]}>{item.Amount}</Text>
+                        </View>
+                    </View>                      
+                }/>
+            </View>
+            <View style={{alignItems: 'center', margin: 10}}>
+                <TouchableOpacity onPress={onGetSales}>
                     <View style={{backgroundColor: COLORS.PRIMARY, width: '50%', padding: 12, borderRadius: 15, alignSelf: 'center'}}>
-                        <Text style={{color: COLORS.SECONDARY, fontWeight: 'bold', fontSize: 25, textAlign: 'center'}}>Print Report Summary</Text>
+                        <Text style={{color: COLORS.SECONDARY, fontWeight: 'bold', fontSize: 25, textAlign: 'center'}}>Generate Report</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -181,6 +271,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 15,
         textTransform: 'uppercase'
+    },
+    time: {
+        flex: 1
     }
 })
 

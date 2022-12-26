@@ -23,12 +23,12 @@ function AdminSettings({navigation}) {
                     <Text style={styles.text}>Users</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
                 <View style={styles.button}>
                     <Image style={styles.image} source={require('../../../assets/item.png')}/>
                     <Text style={styles.text}>Items</Text>
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity onPress={onServices}>
                 <View style={styles.button}>
                     <Image style={styles.image} source={require('../../../assets/laundryorder.png')}/>
