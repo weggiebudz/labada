@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, View, Image, StyleSheet, FlatList, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import { SafeAreaView, Text, View, Image, StyleSheet, FlatList, ScrollView, TouchableOpacity, RefreshControl, RecyclerViewBackedScrollView } from 'react-native';
 import SearchInput from '../components/SearchInput';
 import ImageButton from '../components/ImageButton';
 import { COLORS, SAFEAREAVIEW } from '../themes/Colors'
@@ -9,19 +9,13 @@ import { StackActions, useFocusEffect } from '@react-navigation/native';
 import { ROUTES } from '../../Network';
 import { useEffect } from 'react';
 import * as SQLite from 'expo-sqlite';
-import io from 'socket.io-client';
 
 function Dashboard({navigation}) {
     const [user, setUser] = useState({});
     const [orders, setOrders] = useState([]);
     const db = SQLite.openDatabase('labada_db');
-    const socket = io(ROUTES.URL.replace('/api',''));
 
     useEffect(() => {
-        socket.on('message', message => {
-            console.log(message);
-        });
-
         db.transaction(tx => {
             tx.executeSql(`SELECT * FROM credentials`,
             null,
@@ -66,8 +60,11 @@ function Dashboard({navigation}) {
         navigation.navigate('ScheduleOrder');
     }
 
+    const onPressMemberChat = async () => {
+        navigation.navigate('MemberChat');
+    }
+
     const onLogout = () => {
-        socket.disconnect();
         db.transaction(tx => {
             tx.executeSql(`DELETE FROM credentials`,
             [],
@@ -112,8 +109,16 @@ function Dashboard({navigation}) {
                 <FlatList style={{width: '100%'}} data={orders} refreshControl={<RefreshControl refreshing={false} onRefresh={() => { loadOrderHistory(user) }}/>} renderItem={({item}) => 
                     <OrderCard onPress={() => {onOrderDetails(item)}} label={'Order #' + item.id + ' (' + item.kilo + ' kilo/s)'} statusDesc={item.statusDesc} status={item.status} price={'₱' + item.amount.toLocaleString(undefined, {maximumFractionDigits:2})}/>
                 }/>
-                <View style={{width: '100%'}}>
-                    <FullButton onPress={onScheduleOrder} label='book pick up' imagePath={require('../assets/appointment.png')}/>
+                <View style={{width: '100%', flexDirection: 'row'}}>
+                    <TouchableOpacity onPress={onPressMemberChat} style={{backgroundColor: COLORS.PRIMARY, flex: 1, borderRadius: 18, marginVertical: 12, marginRight: 6, justifyContent: 'center'}}>
+                        <View>
+                            <Image style={{alignSelf: 'center'}} source={require('../assets/chat.png')}/>
+                            <Text style={{color: COLORS.SECONDARY, alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>CHAT</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={{flex: 3, marginLeft: 6}}>
+                        <FullButton onPress={onScheduleOrder} label='book pick up' imagePath={require('../assets/appointment.png')}/>
+                    </View>
                 </View>
             </View>
         </SafeAreaView>

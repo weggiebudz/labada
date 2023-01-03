@@ -12,6 +12,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Dashboard from './app/screens/Dashboard';
 import ScheduleOrder from './app/screens/ScheduleOrder/ScheduleOrder';
 import OrderDetails from './app/screens/OrderDetails/OrderDetails';
+import MemberChat from './app/screens/ScheduleOrder/MemberChat';
 
 import AdminLogin from './app/screens/AdminLogin';
 import RiderDashboard from './app/screens/AdminScreen/Rider/RiderDashboard';
@@ -27,6 +28,8 @@ import AdminOrderHistory from './app/screens/AdminScreen/Admin/AdminOrderHistory
 import AdminSevices from './app/screens/AdminScreen/Admin/AdminSevices';
 import AdminAddService from './app/screens/AdminScreen/Admin/AdminAddService';
 import AdminEditService from './app/screens/AdminScreen/Admin/AdminEditService';
+import AdminChatBox from './app/screens/AdminScreen/Admin/AdminChatBox';
+import AdminChatDetails from './app/screens/AdminScreen/Admin/AdminChatDetails';
 
 const MainStack = createNativeStackNavigator();
 const DashStack = createNativeStackNavigator();
@@ -59,6 +62,8 @@ const CreateAdminStack = () => {
       <AdminStack.Screen name='AdminServices' component={AdminSevices} options={{headerShown: true, title: 'Services'}} />
       <AdminStack.Screen name='AdminAddService' component={AdminAddService} options={{headerShown: true, title: 'Add Service'}} />
       <AdminStack.Screen name='AdminEditService' component={AdminEditService} options={{headerShown: true, title: 'Edit Service'}} />
+      <AdminStack.Screen name='AdminChatBox' component={AdminChatBox} options={{headerShown: true, title: 'Chats'}} />
+      <AdminStack.Screen name='AdminChatDetails' component={AdminChatDetails} options={{headerShown: true, title: ''}} />
     </AdminStack.Navigator>
   );
 }
@@ -75,6 +80,7 @@ export default function App() {
         <MainStack.Screen name="ChangePassword" component={ChangePassword} options={{headerShown: true, title: ''}} />
         <MainStack.Screen name="DashboardStack" component={CreateDashStack} />
         <MainStack.Screen name="NewAccount2" component={NewAccount2} options={{headerShown: true, title: 'Password'}} />
+        <MainStack.Screen name="MemberChat" component={MemberChat} options={{headerShown: true, title: 'Chat'}}/>
         <MainStack.Screen name="AdminStack" component={CreateAdminStack} />
       </MainStack.Navigator>
     </NavigationContainer>

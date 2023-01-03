@@ -21,7 +21,12 @@ function AdminDashboard({navigation}) {
                 "id": 1,
                 "label": "Management",
                 "imagePath": require('../../../assets/gear.png')
-            }
+            },
+            {
+                "id": 2,
+                "label": "Chat",
+                "imagePath": require('../../../assets/chat.png')
+            },
         ]);
     }
 
@@ -42,7 +47,6 @@ function AdminDashboard({navigation}) {
     },[]);
 
     const onLogout = () => {
-        console.log('out');
         db.transaction(tx => {
             tx.executeSql(`DELETE FROM user`,
             [],
@@ -65,6 +69,9 @@ function AdminDashboard({navigation}) {
                 break;
             case 1:
                 navigation.navigate('AdminSettings');
+                break;
+            case 2:
+                navigation.navigate('AdminChatBox');
                 break;
             default:
                 break;
@@ -92,7 +99,7 @@ function AdminDashboard({navigation}) {
                     </View>
                 </View>
                 <Text style={styles.titleHeader}>Menu</Text>
-                <FlatList style={styles.flatList} numColumns={3} data={menu} renderItem={({item}) => 
+                <FlatList style={styles.flatList} numColumns={2} data={menu} renderItem={({item}) => 
                     <TouchableOpacity style={{borderWidth: 1, margin: 5, borderRadius: 10}} onPress={() => { onMenuPress(item) }}>
                         <ImageButton label={item.label} imagePath={item.imagePath} />
                     </TouchableOpacity>
