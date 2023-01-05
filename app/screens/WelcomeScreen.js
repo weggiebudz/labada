@@ -91,11 +91,11 @@ function WelcomeScreen({ navigation }) {
                 </View>
                 <Input label='Phone number' kbType='numeric' maxLength={11} onTextChange={newValue => setMobilePhone(newValue)}/>
                 <Input label='Password' password={true} onTextChange={newValue => setPassword(newValue)}/>
-                <View style={styles.forgotContainer}>
+                {/* <View style={styles.forgotContainer}>
                     <TouchableOpacity onPress={onForgotPassword}>
                         <Text style={styles.touchableText}>Forgot Password?</Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
                 <Button label='Login →' onPress={onLogin}/>
                 <View style={styles.signupContainer}>
                     <Text style={{fontSize: 15, marginTop: 2}}>Don't have an account?

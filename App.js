@@ -30,6 +30,7 @@ import AdminAddService from './app/screens/AdminScreen/Admin/AdminAddService';
 import AdminEditService from './app/screens/AdminScreen/Admin/AdminEditService';
 import AdminChatBox from './app/screens/AdminScreen/Admin/AdminChatBox';
 import AdminChatDetails from './app/screens/AdminScreen/Admin/AdminChatDetails';
+import AdminAddUser from './app/screens/AdminScreen/Admin/AdminAddUser';
 
 const MainStack = createNativeStackNavigator();
 const DashStack = createNativeStackNavigator();
@@ -64,6 +65,7 @@ const CreateAdminStack = () => {
       <AdminStack.Screen name='AdminEditService' component={AdminEditService} options={{headerShown: true, title: 'Edit Service'}} />
       <AdminStack.Screen name='AdminChatBox' component={AdminChatBox} options={{headerShown: true, title: 'Chats'}} />
       <AdminStack.Screen name='AdminChatDetails' component={AdminChatDetails} options={{headerShown: true, title: ''}} />
+      <AdminStack.Screen name='AdminAddUser' component={AdminAddUser} options={{headerShown: true, title: 'Users'}}/>
     </AdminStack.Navigator>
   );
 }

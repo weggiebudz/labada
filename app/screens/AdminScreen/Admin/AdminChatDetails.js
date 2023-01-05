@@ -5,12 +5,12 @@ import io from 'socket.io-client';
 import { COLORS } from '../../../themes/Colors';
 
 function AdminChatDetails({route, navigation}) {
-    navigation.setOptions({title: route.params.chat.fullname})
     const [chatMessages, setChatMessages] = useState([]);
     const [message, setMessage] = useState('');
 
     useEffect(() => {
         onGetChats(route.params.chat);
+        navigation.setOptions({title: route.params.chat.fullname})
 
         const socket = io(ROUTES.URL.replace('/api',''));
 

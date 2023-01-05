@@ -15,9 +15,13 @@ function AdminSettings({navigation}) {
         navigation.navigate('AdminServices');
     }
 
+    const onAdminAddUser = () => {
+        navigation.navigate('AdminAddUser');
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onAdminAddUser}>
                 <View style={styles.button}>
                     <Image style={styles.image} source={require('../../../assets/man.png')}/>
                     <Text style={styles.text}>Users</Text>

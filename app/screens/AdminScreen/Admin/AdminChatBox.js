@@ -1,13 +1,29 @@
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, RefreshControl, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import { ROUTES } from '../../../../Network';
+import io from 'socket.io-client';
 
 function AdminChatBox({navigation}) {
     const [chatList, setChatList] = useState([]);
 
     useEffect(() => {
         onGetChats();
+
+        const socket = io(ROUTES.URL.replace('/api',''));
+
+        socket.on('chatMessage', msg => {
+            onGetChats();
+        });
+
+        return () => {
+            socket.disconnect();
+        }
     },[]);
+
+    useFocusEffect(() => { onGetChats();
+
+    });
 
     const onGetChats = async () => {
         const response = await fetch(ROUTES.URL + '/getAdminChats', {
@@ -24,7 +40,19 @@ function AdminChatBox({navigation}) {
         setChatList(json);
     }
 
-    const onPressChatDetails = (chat) => {
+    const onPressChatDetails = async (chat) => {
+        const response = await fetch(ROUTES.URL + '/clearUnread', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                sender: chat.sender
+            })
+        });
+        const json = await response.json();
+
         navigation.navigate('AdminChatDetails',{chat});
     }
 
@@ -35,8 +63,8 @@ function AdminChatBox({navigation}) {
                     <Text style={{fontSize: 25, fontWeight: 'bold', flex: 1}}>{item.fullname}</Text>
                     {
                         item.chatcount > 0 ?
-                        // <Text style={{fontSize: 25, fontWeight: 'bold', color: 'red'}}>{item.chatcount}</Text>
-                        null
+                        <Text style={{fontSize: 18, fontWeight: 'bold', color: 'white', backgroundColor: 'red', padding: 5, borderRadius: 20}}>{item.chatcount}</Text>
+                        //null
                         :null
                     }
                 </TouchableOpacity>
