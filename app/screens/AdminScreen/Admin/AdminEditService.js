@@ -5,8 +5,8 @@ import { ROUTES } from '../../../../Network';
 import { COLORS } from '../../../themes/Colors';
 
 function AdminEditService({route, navigation}) {
-    const [servicename, setServicename] = useState('');
-    const [rate, setRate] = useState('');
+    const [servicename, setServicename] = useState(route.params.item.servicename);
+    const [rate, setRate] = useState(route.params.item.rate);
 
     const service = route.params.item;
 
@@ -80,10 +80,10 @@ function AdminEditService({route, navigation}) {
     return (
         <SafeAreaView>
             <View style={{padding: 10, borderWidth: 1, borderRadius: 10, margin: 15}}>
-                <TextInput placeholder='Description' defaultValue={service.servicename} onChangeText={value => setServicename(value)}/>
+                <TextInput placeholder='Description' value={servicename} defaultValue={service.servicename} onChangeText={value => setServicename(value)}/>
             </View>
             <View style={{padding: 10, borderWidth: 1, borderRadius: 10, margin: 15, marginTop: 5}}>
-                <TextInput placeholder='Rate' keyboardType='numeric' defaultValue={service.rate.toString()} onChangeText={value => setRate(value)}/>
+                <TextInput placeholder='Rate' value={rate} keyboardType='numeric' defaultValue={service.rate.toString()} onChangeText={value => setRate(value)}/>
             </View>
             <View style={{flexDirection: 'row'}}>
                 <TouchableOpacity style={{flex: 1, margin: 15, marginRight: 7.5}} onPress={onDelete}>
