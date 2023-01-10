@@ -7,6 +7,7 @@ import { COLORS } from '../../../themes/Colors';
 
 function AdminOrderDetails({route, navigation}) {
     const ordItem = route.params.params.item;
+    console.log(ordItem);
     const [isOrderHistory, setIsOrderHistory] = useState(false);
     const [orderItems, setOrderItems] = useState([]);
     const [orderCode, setOrderCode] = useState([]);

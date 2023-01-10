@@ -11,7 +11,7 @@ import { COLORS } from '../../../themes/Colors';
 import DatePicker from 'react-native-date-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-function AdminReports(props) {
+function AdminReports({navigation}) {
     const [itemLabel, setItemLabel] = useState([]);
     const [itemValue, setItemValue] = useState([]);
     const [orderItem, setOrderItem] = useState([]);
@@ -163,6 +163,15 @@ function AdminReports(props) {
         hideDatePickerTo();
       };
 
+      const itemClick = (item) => {
+        console.log(item);
+        const params = {
+            'item': item,
+            'isOrderHistory': true
+        }
+        navigation.navigate('AdminOrderDetails',{params});
+      }
+
     return (
         <SafeAreaView>
             <Text style={styles.header}>SALES</Text>
@@ -229,14 +238,14 @@ function AdminReports(props) {
                     <Text style={[styles.label, {flex: 1, textAlign: 'right'}]}>Amount</Text>
                 </View>
                 <FlatList style={{width: '100%'}} data={salesSummary} refreshControl={<RefreshControl refreshing={false} onRefresh={() => {}}/>} renderItem={({item}) => 
-                    <View style={{flexDirection: 'row', alignItems: 'center', margin: 2, flex: 1}}>
+                    <TouchableOpacity onPress={() => itemClick(item)} style={{flexDirection: 'row', alignItems: 'center', margin: 2, flex: 1}}>
                         <View style={{flexDirection: 'row', backgroundColor: '#D6EAF8', padding: 5, borderRadius: 5}}>
                             <Text style={[styles.label, {flex: 1}]}>{item.DeliverDate}</Text>
                             <Text style={[styles.label, {flex: 1, alignSelf: 'center'}]}>{item.servicename}</Text>
                             <Text style={[styles.label, {flex: 1, textAlign: 'right'}]}>{item.Weight}</Text>
                             <Text style={[styles.label, {flex: 1, textAlign: 'right'}]}>{item.Amount}</Text>
                         </View>
-                    </View>                      
+                    </TouchableOpacity>                      
                 }/>
             </View>
             <View style={{alignItems: 'center', margin: 10}}>
